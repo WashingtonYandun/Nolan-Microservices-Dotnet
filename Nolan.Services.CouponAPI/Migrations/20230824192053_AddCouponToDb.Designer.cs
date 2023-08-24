@@ -11,7 +11,7 @@ using Nolan.Services.CouponAPI.Data;
 namespace Nolan.Services.CouponAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230815052344_AddCouponToDb")]
+    [Migration("20230824192053_AddCouponToDb")]
     partial class AddCouponToDb
     {
         /// <inheritdoc />
@@ -45,6 +45,22 @@ namespace Nolan.Services.CouponAPI.Migrations
                     b.HasKey("CouponId");
 
                     b.ToTable("Coupons");
+
+                    b.HasData(
+                        new
+                        {
+                            CouponId = 1,
+                            CouponCode = "10OAA",
+                            DiscountAmount = 20.0,
+                            MinAmount = 100
+                        },
+                        new
+                        {
+                            CouponId = 2,
+                            CouponCode = "20OBB",
+                            DiscountAmount = 20.0,
+                            MinAmount = 100
+                        });
                 });
 #pragma warning restore 612, 618
         }
