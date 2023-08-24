@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Nolan.Services.CouponAPI.Migrations
 {
     /// <inheritdoc />
@@ -23,6 +25,15 @@ namespace Nolan.Services.CouponAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Coupons", x => x.CouponId);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Coupons",
+                columns: new[] { "CouponId", "CouponCode", "DiscountAmount", "MinAmount" },
+                values: new object[,]
+                {
+                    { 1, "10OAA", 20.0, 100 },
+                    { 2, "20OBB", 20.0, 100 }
                 });
         }
 
