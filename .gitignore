@@ -1,4 +1,4 @@
-/Nolan
+
 /Nolan.Services.CouponAPI/bin
 /Nolan.Services.CouponAPI/obj
 /Nolan.Services.CouponAPI/Properties
@@ -40,3 +40,16 @@
 /Nolan.Server/bin/Debug/*.xaml.g.i.cs.resources
 /Nolan.Server/bin/Debug/*.xaml.g.i.resources
 
+# exclude all the generated files
+/Nolan/bin/
+/Nolan/obj/
+/Nolan/Properties/
+/Nolan/Debug/
+
+# exclude all the generated files
+/Nolan/.vs/
+/Nolan/Nolan.Web/bin/
+/Nolan/Nolan.Web/obj/
+/Nolan/Nolan.Web/Properties/
+/Nolan/Nolan.Web/Debug/
+/Nolan/Nolan.Web/wwwroot/
