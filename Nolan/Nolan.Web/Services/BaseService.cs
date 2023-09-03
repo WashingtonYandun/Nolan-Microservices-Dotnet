@@ -17,7 +17,7 @@ namespace Nolan.Web.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<ResonseDto> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDto> SendAsync(RequestDto requestDto)
         {
             var client = _httpClientFactory.CreateClient("NolanApi");
             HttpRequestMessage request = new HttpRequestMessage();
@@ -52,22 +52,22 @@ namespace Nolan.Web.Services
 
             var response = await client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            var resonseDto = new ResonseDto();
-            resonseDto.Result = content;
+            var respDto = new ResponseDto();
+            respDto.Result = content;
             if (!response.IsSuccessStatusCode)
             {
-                resonseDto.IsSuccess = false;
+                respDto.IsSuccess = false;
                 var statusCode = response.StatusCode;
                 if (statusCode == HttpStatusCode.Unauthorized)
                 {
-                    resonseDto.Message = "Please login again";
+                    respDto.Message = "Please login again";
                 }
                 else if (statusCode == HttpStatusCode.Forbidden)
                 {
-                    resonseDto.Message = "You are not authorized";
+                    respDto.Message = "You are not authorized";
                 }
             }
-            return resonseDto;
+            return respDto;
         }
     }
 }
