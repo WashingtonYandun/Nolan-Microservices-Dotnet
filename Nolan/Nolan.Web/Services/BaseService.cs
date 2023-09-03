@@ -17,57 +17,54 @@ namespace Nolan.Web.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<ResponseDto> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
         {
-            var client = _httpClientFactory.CreateClient("NolanApi");
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Add("Accept", "application/json");
-            request.RequestUri = new Uri(requestDto.Url);
-
-            switch (requestDto.ApiType)
+            try
             {
-                case ApiType.GET:
-                    request.Method = HttpMethod.Get;
-                    break;
-                case ApiType.POST:
-                    request.Method = HttpMethod.Post;
-                    request.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
-                    break;
-                case ApiType.PUT:
-                    request.Method = HttpMethod.Put;
-                    request.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
-                    break;
-                case ApiType.DELETE:
-                    request.Method = HttpMethod.Delete;
-                    break;
-                default:
-                    request.Method = HttpMethod.Get;
-                    break;
-            }
+                var client = _httpClientFactory.CreateClient("NolanAPI");
+                HttpRequestMessage message = new HttpRequestMessage();
+                message.Headers.Add("Accept", "application/json");
+                message.RequestUri = new Uri(requestDto.Url);
 
-            if (!string.IsNullOrEmpty(requestDto.AccessToken))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requestDto.AccessToken);
-            }
-
-            var response = await client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            var respDto = new ResponseDto();
-            respDto.Result = content;
-            if (!response.IsSuccessStatusCode)
-            {
-                respDto.IsSuccess = false;
-                var statusCode = response.StatusCode;
-                if (statusCode == HttpStatusCode.Unauthorized)
+                switch (requestDto.Method)
                 {
-                    respDto.Message = "Please login again";
+                    case ApiMethod.GET:
+                        message.Method = HttpMethod.Get;
+                        break;
+                    case ApiMethod.POST:
+                        message.Method = HttpMethod.Post;
+                        message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
+                        break;
+                    case ApiMethod.PUT:
+                        message.Method = HttpMethod.Put;
+                        message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
+                        break;
+                    case ApiMethod.DELETE:
+                        message.Method = HttpMethod.Delete;
+                        break;
+                    default:
+                        message.Method = HttpMethod.Get;
+                        break;
                 }
-                else if (statusCode == HttpStatusCode.Forbidden)
-                {
-                    respDto.Message = "You are not authorized";
-                }
+
+                var response = await client.SendAsync(message);
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<ResponseDto>(content);
+
+                return result;
             }
-            return respDto;
+            catch (Exception ex)
+            {
+                var dto = new ResponseDto
+                {
+                    IsSuccess = false,
+                    Message = new HttpResponseMessage(HttpStatusCode.InternalServerError).ToString(),
+                };
+                var response = JsonConvert.SerializeObject(dto);
+                var content = new StringContent(response, Encoding.UTF8, "application/json");
+                var result = JsonConvert.DeserializeObject<ResponseDto>(response);
+                return result;
+            }
         }
     }
 }
