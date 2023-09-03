@@ -1,6 +1,6 @@
 ﻿namespace Nolan.Web.Utils
 {
-    public enum ApiType
+    public enum ApiMethod
     {
         GET,
         POST,
