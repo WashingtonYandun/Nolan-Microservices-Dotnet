@@ -14,7 +14,7 @@ namespace Nolan.Services.CouponAPI.Controllers
         #region Private Fields
 
         private readonly AppDbContext _db;
-        private ResonseDto _response;
+        private ResponseDto _response;
         private readonly IMapper _mapper;
 
         #endregion
@@ -25,7 +25,7 @@ namespace Nolan.Services.CouponAPI.Controllers
         {
             _db = db;
             _mapper = mapper;
-            _response = new ResonseDto();
+            _response = new ResponseDto();
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace Nolan.Services.CouponAPI.Controllers
         #region GET Methods
 
         [HttpGet]
-        public async Task<ResonseDto> Get()
+        public async Task<ResponseDto> Get()
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Nolan.Services.CouponAPI.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ResonseDto> GetById(int id)
+        public async Task<ResponseDto> GetById(int id)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Nolan.Services.CouponAPI.Controllers
 
         [HttpGet]
         [Route("[action]/{code}")]
-        public async Task<ResonseDto> GetByCode(string code)
+        public async Task<ResponseDto> GetByCode(string code)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Nolan.Services.CouponAPI.Controllers
         #region POST Methods
 
         [HttpPost]
-        public async Task<ResonseDto> Post([FromBody] CouponDto couponDto)
+        public async Task<ResponseDto> Post([FromBody] CouponDto couponDto)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace Nolan.Services.CouponAPI.Controllers
         #region PUT Methods
 
         [HttpPut]
-        public async Task<ResonseDto> Put([FromBody] CouponDto couponDto)
+        public async Task<ResponseDto> Put([FromBody] CouponDto couponDto)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace Nolan.Services.CouponAPI.Controllers
 
         [HttpDelete]
         [Route("[action]/{id:int}")]
-        public async Task<ResonseDto> DeleteById(int id)
+        public async Task<ResponseDto> DeleteById(int id)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace Nolan.Services.CouponAPI.Controllers
 
         [HttpDelete]
         [Route("[action]/{code}")]
-        public async Task<ResonseDto> DeleteByCode(string code)
+        public async Task<ResponseDto> DeleteByCode(string code)
         {
             try
             {
